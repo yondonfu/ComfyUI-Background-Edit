@@ -1,3 +1,4 @@
 opencv-python
 numpy
 torch
+https://github.com/CVCUDA/CV-CUDA/releases/download/v0.12.0-beta/cvcuda_cu12-0.12.0b0-cp311-cp311-linux_x86_64.whl
