@@ -1,0 +1,20 @@
+[project]
+name = "comfyui-background-edit"
+description = "ComfyUI nodes for editing background of images/videos with CUDA acceleration support."
+version = "1.0.0"
+license = { file = "LICENSE" }
+dependencies = [
+  "opencv-python",
+  "numpy",
+  "torch",
+  "https://github.com/CVCUDA/CV-CUDA/releases/download/v0.12.0-beta/cvcuda_cu12-0.12.0b0-cp311-cp311-linux_x86_64.whl",
+]
+
+[project.urls]
+Repository = "https://github.com/yondonfu/ComfyUI-Background-Edit"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = "yondonfu"
+DisplayName = "ComfyUI-Background-Edit"
+Icon = ""
