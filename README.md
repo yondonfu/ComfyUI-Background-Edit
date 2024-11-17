@@ -15,12 +15,17 @@ The CUDA accelerated nodes can be used in real-time workflows for live video str
 - [ComfyUI-Background-Edit](#comfyui-background-edit)
 - [Install](#install)
   - [Comfy Registry](#comfy-registry)
+  - [ComfyUI-Manager](#comfyui-manager)
   - [Manual](#manual)
 - [Example Real-Time Live Video Workflows](#example-real-time-live-video-workflows)
 - [Example Image Workflows](#example-image-workflows)
 - [Nodes](#nodes)
 
 # Install
+
+**Prererquisites**
+
+- Install [comfy-cli](https://docs.comfy.org/comfy-cli/getting-started)
 
 The recommended installation method is to use the Comfy Registry.
 
@@ -30,6 +35,14 @@ These nodes can be installed via the [Comfy Registry](https://registry.comfy.org
 
 ```
 comfy node registry-install comfyui-background-edit
+```
+
+## ComfyUI-Manager
+
+These nodes can be installed via ComfyUI-Manager in the UI or via the CLI:
+
+```
+comfy node install comfyui-background-edit
 ```
 
 ## Manual
