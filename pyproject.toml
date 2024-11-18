@@ -1,12 +1,9 @@
 [project]
 name = "comfyui-background-edit"
 description = "ComfyUI nodes for editing background of images/videos with CUDA acceleration support."
-version = "1.0.0"
+version = "1.1.0"
 license = { file = "LICENSE" }
-dependencies = [
-  "torch",
-  "torchvision"
-]
+dependencies = ["torch", "torchvision"]
 
 [project.urls]
 Repository = "https://github.com/yondonfu/ComfyUI-Background-Edit"

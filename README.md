@@ -10,8 +10,6 @@ Supported use cases:
 
 The CUDA accelerated nodes can be used in real-time workflows for live video streams using [comfystream](https://github.com/yondonfu/comfystream).
 
-At the moment, these nodes can only be used on Linux because the underlying CUDA acceleration library only supports Linux ([refer to this issue](https://github.com/CVCUDA/CV-CUDA/issues/92) for tracking of Windows support).
-
 --- 
 
 - [ComfyUI-Background-Edit](#comfyui-background-edit)
