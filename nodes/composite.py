@@ -1,7 +1,4 @@
 import torch
-import cvcuda
-import cv2
-import numpy as np
 
 
 class Composite:
@@ -35,41 +32,19 @@ class Composite:
                 "mismatch number of backgrounds, foregrounds and foreground masks"
             )
 
-        if mode == "cpu":
-            inverse_masks = 1.0 - foreground_masks
+        if mode != "cuda" and mode != "cpu":
+            raise Exception("invalid mode")
 
-            fgs = foregrounds * foreground_masks.unsqueeze(-1)
-            bgs = backgrounds * inverse_masks.unsqueeze(-1)
-
-            fgs_np = (fgs * 255.0).clamp(0, 255).to(dtype=torch.uint8).cpu().numpy()
-            bgs_np = (bgs * 255.0).clamp(0, 255).to(dtype=torch.uint8).cpu().numpy()
-
-            results = []
-            for fg, bg in zip(fgs_np, bgs_np):
-                result = cv2.add(fg, bg)
-                results.append(result)
-
-            return (
-                torch.from_numpy(np.stack(results, axis=0).astype(np.float32) / 255.0),
-            )
-        elif mode == "cuda":
+        if mode == "cuda":
             foregrounds = foregrounds.to("cuda")
             backgrounds = backgrounds.to("cuda")
             foreground_masks = foreground_masks.to("cuda")
 
-            fgs = cvcuda.convertto(
-                cvcuda.as_tensor(foregrounds, "NHWC"), np.uint8, scale=255
-            )
-            bgs = cvcuda.convertto(
-                cvcuda.as_tensor(backgrounds, "NHWC"), np.uint8, scale=255
-            )
-            fgmasks = cvcuda.convertto(
-                cvcuda.as_tensor(foreground_masks.unsqueeze(-1), "NHWC"),
-                np.uint8,
-                scale=255,
-            )
-            result = cvcuda.composite(fgs, bgs, fgmasks, 3)
+        inverse_masks = 1.0 - foreground_masks
 
-            return (torch.as_tensor(result.cuda()) / 255.0,)
-        else:
-            raise Exception("invalid mode")
+        fgs = foregrounds * foreground_masks.unsqueeze(-1)
+        bgs = backgrounds * inverse_masks.unsqueeze(-1)
+
+        results = fgs + bgs
+
+        return (results,)
