@@ -1,7 +1,6 @@
 import torch
-import cvcuda
-import cv2
-import numpy as np
+
+from torchvision.transforms import v2
 
 
 class GaussianBlur:
@@ -27,29 +26,17 @@ class GaussianBlur:
         sigma: int = 5,
         mode: str = "cuda",
     ):
-        if mode == "cpu":
-            images_np = (
-                (images * 255.0).clamp(0, 255).to(dtype=torch.uint8).cpu().numpy()
-            )
+        if mode != "cuda" and mode != "cpu":
+            raise Exception("invalid mode")
 
-            results = []
-            for image in images_np:
-                result = cv2.GaussianBlur(
-                    image, (kernel_size, kernel_size), sigma, sigma
-                )
-                results.append(result)
-
-            return (
-                torch.from_numpy(np.stack(results, axis=0).astype(np.float32) / 255.0),
-            )
-        elif mode == "cuda":
+        if mode == "cuda":
             images = images.to("cuda")
 
-            result = cvcuda.gaussian(
-                cvcuda.as_tensor(images, "NHWC"),
-                (kernel_size, kernel_size),
-                (sigma, sigma),
-            )
-            return (torch.as_tensor(result.cuda()),)
-        else:
-            raise Exception("invalid mode")
+        gaussian_blur = v2.GaussianBlur((kernel_size, kernel_size), (sigma, sigma))
+        # torchvision expects a BCHW tensor
+        # Convert input BHWC -> BCHW
+        blurred = gaussian_blur(images.permute(0, 3, 1, 2))
+
+        # Comfy expects a BHWC tensor
+        # Convert output BCHW -> BHWC
+        return (blurred.permute(0, 2, 3, 1),)
