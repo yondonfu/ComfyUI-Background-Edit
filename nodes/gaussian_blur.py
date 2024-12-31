@@ -13,8 +13,8 @@ class GaussianBlur:
         return {
             "required": {
                 "images": ("IMAGE",),
-                "kernel_size": ("INT", {"default": 61}),
-                "sigma": ("INT", {"default": 5}),
+                "kernel_size": ("INT", {"default": 61, "min": 1, "step": 2}),
+                "sigma": ("INT", {"default": 5, "min": 1, "step": 1}),
                 "mode": (["cuda", "cpu"], {"default": "cuda"}),
             }
         }
